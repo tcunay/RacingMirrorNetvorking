@@ -6,6 +6,8 @@ using Mirror;
 public class Player :  NetworkBehaviour
 {
     [SerializeField] private SpritesContanier _spritesContanier;
+
+    [SyncVar]
     [SerializeField] private string _name;
 
     private PlayerStatsPanel _playerStatsPanel;
@@ -17,6 +19,8 @@ public class Player :  NetworkBehaviour
     public bool IsFirstCheckPoint => _isFirstedCheckPoint;
 
     public float TimeCheckPoint => _timeCheckPoint;
+
+    public string Name => _name;
 
     private SpriteRenderer _spriteRenderer;
 
@@ -30,21 +34,28 @@ public class Player :  NetworkBehaviour
         }
     }
 
-    public void OvercomeFirstCheckPoint()
+    [Command]
+    public void CmdOvercomeFirstCheckPoint()
     {
         _isFirstedCheckPoint = false;
     }
 
-
-    public void SetTimeCheckpoint(float time)
+    [Command]
+    public void CmdSetTimeCheckpoint(float time)
     {
         _timeCheckPoint = time;
     }
 
+    [Command]
     public void SetPlayerStatsPanel(PlayerStatsPanel panel)
     {
         _playerStatsPanel = panel;
     }
 
+    [Command]
+    public void CmdSetName(string name)
+    {
+        _name = name;
+    }
 
 }

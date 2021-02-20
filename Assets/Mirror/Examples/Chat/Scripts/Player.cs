@@ -21,6 +21,7 @@ namespace Mirror.Examples.Chat
         public void RpcReceive(string message)
         {
             OnMessage?.Invoke(this, message);
+
         }
     }
 }

@@ -43,7 +43,7 @@ public class TopPlayersPanel : NetworkBehaviour
     private void InitStatsPanel(Player player)
     {
         var panel = Instantiate(_playerStatsPanel, transform);
-        player.OvercomeFirstCheckPoint();
+        player.CmdOvercomeFirstCheckPoint();
         player.SetPlayerStatsPanel(panel);
         panel.RenderPlayerStats(player);
     }

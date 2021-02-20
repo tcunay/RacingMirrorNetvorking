@@ -6,9 +6,9 @@ using Mirror;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMover : NetworkBehaviour
 {
-    [SyncVar]
+
     [SerializeField] private float _speedForce;
-    [SyncVar]
+
     [SerializeField] private float _rotateForce;
 
     private Rigidbody2D _rigidbody;
@@ -20,26 +20,25 @@ public class PlayerMover : NetworkBehaviour
 
     private void Update()
     {
-        CmdMove(GetDirectionToMove());
-        CmdTurn(GetDirectionToRotate());
+        if (!isLocalPlayer) return;
+        Move(GetDirectionToMove());
+        Turn(GetDirectionToRotate());
     }
 
-    [Command]
-    private void CmdMove(Vector2 direction)
+    [Client]
+    private void Move(Vector2 direction)
     {
-        if (isClient)
-        {
-            _rigidbody.AddForce(direction.normalized * _speedForce * Time.deltaTime, ForceMode2D.Impulse);
-        }
+
+        _rigidbody.AddForce(direction.normalized * _speedForce * Time.deltaTime, ForceMode2D.Impulse);
     }
 
-    [Command]
-    private void CmdTurn(Vector2 direction)
+    [Client]
+    private void Turn(Vector2 direction)
     {
-        if(isClient)
         _rigidbody.AddForce(direction.normalized * _rotateForce * Time.deltaTime);
     }
 
+    [Client]
     private Vector2 GetDirectionToMove()
     {
         var direction = Vector2.zero;
@@ -49,6 +48,7 @@ public class PlayerMover : NetworkBehaviour
         return direction;
     }
 
+    [Client]
     private Vector2 GetDirectionToRotate()
     {
         var directionX = Input.GetAxis("Horizontal");

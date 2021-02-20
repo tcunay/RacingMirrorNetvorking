@@ -11,6 +11,6 @@ public class PlayerStatsPanel : NetworkBehaviour
     
     public void RenderPlayerStats(Player player)
     {
-        _playerStats.text = player.name + " : " + player.TimeCheckPoint.ToString();
+        _playerStats.text = player.Name + " : " + player.TimeCheckPoint.ToString();
     }
 }
