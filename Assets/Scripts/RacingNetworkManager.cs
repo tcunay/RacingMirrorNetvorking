@@ -6,7 +6,7 @@ using Mirror;
 
 public class RacingNetworkManager : NetworkManager
 {
-    [SerializeField] private GameObject _spawnGroupContanier;
+    [SerializeField] private PlayerCreator _playerCreator;
 
     private string _playerName;
 
@@ -18,44 +18,36 @@ public class RacingNetworkManager : NetworkManager
     public override void OnStartServer()
     {
         base.OnStartServer();
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
     }
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
 
         base.OnServerAddPlayer(conn);
-       // SpawnGroupToogle();
 
-       // if (string.IsNullOrWhiteSpace(_playerName))
-
-            if (numPlayers >= 1)
-        {
-            NetworkTime.Reset();
-            Time.timeScale = 1;
-            StartedGame?.Invoke();
-        }
+        //if (numPlayers == 3)
+        //{
+        //    Time.timeScale = 1;
+            
+        //}
+            //TimeManager.TimeManagerSingltone.BeginTickTime();
     }
-
     public override void OnClientConnect(NetworkConnection conn)
     {
-        //_playerCreator.SpawnPlayer()
+        
 
-        //base.OnClientConnect(conn);
-        // OnClientConnect by default calls AddPlayer but it should not do
-        // that when we have online/offline scenes. so we need the
-        // clientLoadedScene flag to prevent it.
-        if (!clientLoadedScene) //_playerCreator.SpawnPlayer()
+        if (!clientLoadedScene)
         {
             // Ready/AddPlayer is usually triggered by a scene load completing. if no scene was loaded, then Ready/AddPlayer it here instead.
             if (!ClientScene.ready) ClientScene.Ready(conn);
-            if (autoCreatePlayer)
             {
-                ClientScene.AddPlayer(conn);
-                //NetworkClient.connection.identity.GetComponent<Player>().CmdSetName("SDGFSDF");         //_playerCreator.GetName()
+                _playerCreator.SetNetworkConection(conn);
+                _playerCreator.SpawnObjectsTogle();
+                
             }
         }
-
     }
+
     public void SetPlayerName(string name)
     {
         _playerName = name;
@@ -64,10 +56,5 @@ public class RacingNetworkManager : NetworkManager
     public string GetName()
     {
         return _playerName;
-    }
-
-    public void SpawnGroupToogle()
-    {
-        _spawnGroupContanier.SetActive(!_spawnGroupContanier.activeSelf);
     }
 }

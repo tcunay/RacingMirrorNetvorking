@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using TMPro;
 
 public class Player :  NetworkBehaviour
 {
     [SerializeField] private SpritesContanier _spritesContanier;
 
+    [SerializeField] private TMP_Text _nameText; 
+
     [SyncVar]
     [SerializeField] private string _name;
 
-    private PlayerStatsPanel _playerStatsPanel;
+    [SyncVar]
     private float _timeCheckPoint;
     private bool _isFirstedCheckPoint = true;
 
-    public PlayerStatsPanel PlayerStatsPanel => _playerStatsPanel;
-
     public bool IsFirstCheckPoint => _isFirstedCheckPoint;
 
+    
     public float TimeCheckPoint => _timeCheckPoint;
 
     public string Name => _name;
@@ -26,6 +28,8 @@ public class Player :  NetworkBehaviour
 
     private void Start()
     {
+        if(isServer)
+        CmdSetName();
         if (isLocalPlayer)
         {
             Camera.main.GetComponent<CameraFollow>().SetPlayer(this);
@@ -40,22 +44,25 @@ public class Player :  NetworkBehaviour
         _isFirstedCheckPoint = false;
     }
 
-    [Command]
-    public void CmdSetTimeCheckpoint(float time)
+    
+    public void SetTimeCheckpoint()
     {
-        _timeCheckPoint = time;
+        _timeCheckPoint = TimeManager.TimeManagerSingltone.GetTime();
     }
 
     [Command]
-    public void SetPlayerStatsPanel(PlayerStatsPanel panel)
+    private void CmdSetName()
     {
-        _playerStatsPanel = panel;
+        _name = PlayerCreator.PlayerCreatorSingltone.PlayerName;
+        //RpcSetName();
+        //_nameText.text = _name;
     }
 
-    [Command]
-    public void CmdSetName(string name)
-    {
-        _name = name;
-    }
+    //[ClientRpc]
+    //private void RpcSetName()
+    //{
+    //    _name = PlayerCreator.PlayerCreatorSingltone.PlayerName;
+    //}
+
 
 }

@@ -280,6 +280,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  _text: {fileID: 0}
+  _players: []
 --- !u!61 &6297078307093864764
 BoxCollider2D:
   m_ObjectHideFlags: 0

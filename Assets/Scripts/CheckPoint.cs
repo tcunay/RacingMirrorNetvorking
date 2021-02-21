@@ -5,44 +5,59 @@ using UnityEngine.Events;
 using TMPro;
 using Mirror;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class CheckPoint : NetworkBehaviour
 {
-    [SerializeField] private TMP_Text _text; 
-    public event UnityAction<Player> Reached;
 
-    private List<Player> _players;
+    [SerializeField] private TMP_Text _text; 
+    [SerializeField] private List<string> _playersName = new List<string>();
+    [SerializeField] private List<float> _playersCheckPointTime = new List<float>();
+
 
     [Server]
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent(out Player player))
         {
-            _players.Add(player);
+            Debug.Log("Checkpoint");
+            player.SetTimeCheckpoint();
 
-            //player.CmdSetTimeCheckpoint(Time.realtimeSinceStartup);
-            //Reached?.Invoke(player);
+            _playersName.Add(player.Name);
+            _playersCheckPointTime.Add(player.TimeCheckPoint);
+
+            RenderTopPlayers(player);
         }
     }
 
-    private void RenderTopPlayers()
+    [Server]
+    private void RenderTopPlayers(Player player)
     {
-        for (int i = 0; i < _players.Count; i++)
+        NetworkIdentity playerIdentity = player.GetComponent<NetworkIdentity>();
+
+        var text = "";
+        RpcRenderTopPlayers(playerIdentity.connectionToClient, text);
+        for (int i = 0; i < NetworkManager.singleton.numPlayers; i++)
         {
-            _text.text += (_players[i].Name + ":" + _players[i].TimeCheckPoint.ToString() + "\n");
+            if (_playersName[i] == null)
+            {
+                text += "--------\n";
+            }
+            else if (_playersName[i] != null && i == 0)
+            {
+                text += ((i+1).ToString() + "- " + _playersName[i] + " : " + _playersCheckPointTime[i].ToString() + "\n");
+            }
+            else
+            {
+                text += ((i + 1).ToString() + "- " + _playersName[i] + " :  +" + (_playersCheckPointTime[i] - _playersCheckPointTime[0]).ToString() + "\n");
+            }
+
+            RpcRenderTopPlayers(playerIdentity.connectionToClient, text);
         }
-
-       
     }
 
-    [Command]
-    private void CmdRenderTopPlayers()
+    [TargetRpc]
+    private void RpcRenderTopPlayers(NetworkConnection target, string text)
     {
-        RpcRenderTopPlayers();
-    }
-
-    [ClientRpc]
-    private void RpcRenderTopPlayers()
-    {
-
+        _text.text = text;
     }
 }
