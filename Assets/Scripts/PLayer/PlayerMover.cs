@@ -13,6 +13,9 @@ public class PlayerMover : NetworkBehaviour
 
     private Rigidbody2D _rigidbody;
 
+    [SyncVar]
+    private bool _permissionToMove;
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -21,6 +24,8 @@ public class PlayerMover : NetworkBehaviour
     private void Update()
     {
         if (!isLocalPlayer) return;
+        if (!_permissionToMove) return;
+
         Move(GetDirectionToMove());
         Turn(GetDirectionToRotate());
     }
@@ -55,4 +60,11 @@ public class PlayerMover : NetworkBehaviour
         var direction = new Vector2(directionX, 0);
         return direction;
     }
+
+    [Server]
+    public void GivePermissionToMove()
+    {
+        _permissionToMove = true;
+    }
+
 }

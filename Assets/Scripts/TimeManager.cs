@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Mirror;
 
 public class TimeManager : NetworkBehaviour
@@ -10,7 +11,9 @@ public class TimeManager : NetworkBehaviour
 
     private static TimeManager _timeManager;
 
-    private bool _isStartGame= true;
+    public event UnityAction GameStarted;
+
+    private bool _isStartGame = false;
 
     public static TimeManager TimeManagerSingltone
     {
@@ -36,7 +39,6 @@ public class TimeManager : NetworkBehaviour
         if (_isStartGame)
         {
             _currentTime += Time.deltaTime;
-            //Debug.Log(_currentTime);
         }
     }
 
@@ -45,8 +47,11 @@ public class TimeManager : NetworkBehaviour
         return _currentTime;
     }
 
+    [Server]
     public void BeginTickTime()
     {
         _isStartGame = true;
+        GameStarted?.Invoke();
     }
+
 }

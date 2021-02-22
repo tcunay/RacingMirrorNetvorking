@@ -36,15 +36,11 @@ public class CheckPoint : NetworkBehaviour
 
         var text = "";
         RpcRenderTopPlayers(playerIdentity.connectionToClient, text);
-        for (int i = 0; i < NetworkManager.singleton.numPlayers; i++)
+        for (int i = 0; i < _playersName.Count; i++)
         {
-            if (_playersName[i] == null)
+            if (_playersName[i] != null && i == 0)
             {
-                text += "--------\n";
-            }
-            else if (_playersName[i] != null && i == 0)
-            {
-                text += ((i+1).ToString() + "- " + _playersName[i] + " : " + _playersCheckPointTime[i].ToString() + "\n");
+                text += ((i + 1).ToString() + "- " + _playersName[i] + " : " + _playersCheckPointTime[i].ToString() + "\n");
             }
             else
             {
