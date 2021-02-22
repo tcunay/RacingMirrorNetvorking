@@ -691,7 +691,6 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs:
-  - {fileID: 5464639568734293616, guid: 114e1938970e4814fa18b54e84f4e102, type: 3}
   - {fileID: 8174177329462597308, guid: 6f2030b92193636428459420556be787, type: 3}
   - {fileID: 6297078307093864767, guid: 51fad7d3befd0df46894aa814f822927, type: 3}
   - {fileID: 278938923851196817, guid: ff2ec0a5a34ecea44aea96df20be71a8, type: 3}
@@ -2940,7 +2939,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1457290365}
-  - component: {fileID: 1457290364}
   - component: {fileID: 1457290363}
   m_Layer: 0
   m_Name: PlayerCreator
@@ -2961,26 +2959,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b839bdc906e639438d6b50adcc72b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   _playerNameInputField: {fileID: 760391829}
   _spawnReadyButton: {fileID: 1972129325}
---- !u!114 &1457290364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1457290362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 2402371912
-  serverOnly: 0
-  m_AssetId: 
-  hasSpawned: 0
 --- !u!4 &1457290365
 Transform:
   m_ObjectHideFlags: 0

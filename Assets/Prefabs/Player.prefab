@@ -386,7 +386,7 @@ MonoBehaviour:
   _spritesContanier: {fileID: 6117690779952735260, guid: 97158190f32de57459004f60832176cb,
     type: 3}
   _nameText: {fileID: 2305510001295274089}
-  _name: Test
+  _name: 
 --- !u!114 &8103908635243193840
 MonoBehaviour:
   m_ObjectHideFlags: 0

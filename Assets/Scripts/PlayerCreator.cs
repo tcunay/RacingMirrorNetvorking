@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class PlayerCreator : NetworkBehaviour
+public class PlayerCreator : MonoBehaviour
 {
     [SerializeField] private GameObject _playerNameInputField;
     [SerializeField] private GameObject _spawnReadyButton;

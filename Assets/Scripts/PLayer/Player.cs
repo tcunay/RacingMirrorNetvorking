@@ -28,41 +28,31 @@ public class Player :  NetworkBehaviour
 
     private void Start()
     {
-        if(isServer)
-        CmdSetName();
         if (isLocalPlayer)
         {
+            SetName();
             Camera.main.GetComponent<CameraFollow>().SetPlayer(this);
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _spriteRenderer.sprite = _spritesContanier.GetPlayerSprite();
         }
     }
 
-    [Command]
-    public void CmdOvercomeFirstCheckPoint()
-    {
-        _isFirstedCheckPoint = false;
-    }
-
-    
     public void SetTimeCheckpoint()
     {
         _timeCheckPoint = TimeManager.TimeManagerSingltone.GetTime();
     }
 
-    [Command]
-    private void CmdSetName()
+    [Client]
+    private void SetName()
     {
-        _name = PlayerCreator.PlayerCreatorSingltone.PlayerName;
-        //RpcSetName();
-        //_nameText.text = _name;
+        var name = PlayerCreator.PlayerCreatorSingltone.PlayerName;
+        CmdSetName(name);
     }
 
-    //[ClientRpc]
-    //private void RpcSetName()
-    //{
-    //    _name = PlayerCreator.PlayerCreatorSingltone.PlayerName;
-    //}
-
+    [Command]
+    private void CmdSetName(string name)
+    {
+        _name = name;
+    }
 
 }
